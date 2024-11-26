@@ -1,0 +1,24 @@
+class FiniteStateAutomaton:
+    def __init__(self):
+        self.state = "START"
+
+    def process(self, char):
+        if self.state == "START":
+            self.state = "A" if char == 'a' else "START"
+        elif self.state == "A":
+            self.state = "AB" if char == 'b' else "A" if char == 'a' else "START"
+        elif self.state == "AB":
+            self.state = "A" if char == 'a' else "START"
+
+    def is_accepting(self):
+        return self.state == "AB"
+
+def test_fsa(string):
+    fsa = FiniteStateAutomaton()
+    for char in string:
+        fsa.process(char)
+    return fsa.is_accepting()
+
+strings = ["aab", "helloab", "abc", "xxab", "test"]
+for s in strings:
+    print(f"Does '{s}' end with 'ab'? {'Yes' if test_fsa(s) else 'No'}")
