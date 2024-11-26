@@ -1,0 +1,10 @@
+from nltk.stem import PorterStemmer
+
+porter_stemmer = PorterStemmer()
+
+words = ["running", "jumps", "easily", "happiness", "flying", "better"]
+
+stems = [porter_stemmer.stem(word) for word in words]
+
+for word, stem in zip(words, stems):
+    print(f"Original: {word} -> Stemmed: {stem}")
