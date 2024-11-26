@@ -1,0 +1,14 @@
+def pluralize(noun):
+    if noun.endswith("y"):
+        return noun[:-1] + "ies"
+    elif noun.endswith(("s", "x", "z", "ch", "sh")):
+        return noun + "es"
+    else:
+        return noun + "s"
+
+nouns = ["cat", "dog", "box", "city", "church", "baby", "fox"]
+
+plurals = [pluralize(noun) for noun in nouns]
+
+for noun, plural in zip(nouns, plurals):
+    print(f"Original: {noun} -> Plural: {plural}")
