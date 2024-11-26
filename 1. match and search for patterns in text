@@ -1,0 +1,19 @@
+import re
+
+text = "The sun sets in the west and rises in the east."
+
+result_in = re.findall(r"in", text)
+print("Occurrences of 'in':", result_in)
+
+result_s = re.findall(r"\bs\w*", text)
+print("Words starting with 's':", result_s)
+
+replaced_text = re.sub(r"west", "north", text)
+print("Replaced text:", replaced_text)
+
+
+output:
+Occurrences of 'in': ['in', 'in']
+Words starting with 's': ['sun', 'sets']
+Replaced text: The sun sets in the north and rises in the east.
+
