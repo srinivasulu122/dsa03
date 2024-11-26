@@ -1,0 +1,22 @@
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer, PorterStemmer
+
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('punkt_tab')  
+
+sentence = "The cats are running and jumping around the park."
+
+tokens = word_tokenize(sentence)
+
+lemmatizer = WordNetLemmatizer()
+stemmer = PorterStemmer()
+
+lemmatized_words = [lemmatizer.lemmatize(word, pos='v') for word in tokens]  # lemmatize as verbs
+
+stemmed_words = [stemmer.stem(word) for word in tokens]
+
+print("Original Tokens:", tokens)
+print("Lemmatized Words:", lemmatized_words)
+print("Stemmed Words:", stemmed_words)
