@@ -1,0 +1,14 @@
+text = "The cat sleeps on the mat"
+words = text.split()
+initial_tags = ["NN"] * len(words)
+
+print("Initial Tags:", list(zip(words, initial_tags)))
+
+rules = {
+    "The": "DT",
+    "on": "IN"
+}
+
+transformed_tags = [rules.get(word, tag) for word, tag in zip(words, initial_tags)]
+
+print("Transformed Tags:", list(zip(words, transformed_tags)))
