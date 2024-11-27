@@ -1,0 +1,25 @@
+def resolve_references(text):
+    pronouns_to_referents = {
+        'he': 'John',
+        'she': 'Mary',
+        'it': 'the object',
+        'they': 'the group'
+    }
+
+    words = text.split()
+    resolved_text = []
+
+    for word in words:
+        word_lower = word.lower()
+        
+        if word_lower in pronouns_to_referents:
+            resolved_text.append(pronouns_to_referents[word_lower])
+        else:
+            resolved_text.append(word)
+    
+    return " ".join(resolved_text)
+
+
+text = "He went to the store. She bought it. They are happy."
+resolved_text = resolve_references(text)
+print("Resolved Text:", resolved_text)
