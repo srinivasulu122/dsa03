@@ -1,0 +1,35 @@
+import random
+
+class MarkovChainTextGenerator:
+    def __init__(self, text, n=2):
+        self.n = n
+        self.model = {}
+        self.build_model(text)
+
+    def build_model(self, text):
+        words = text.split()
+        for i in range(len(words) - self.n):
+            key = tuple(words[i:i + self.n])
+            next_word = words[i + self.n]
+            if key not in self.model:
+                self.model[key] = []
+            self.model[key].append(next_word)
+
+    def generate_text(self, length=50):
+        start_key = random.choice(list(self.model.keys()))
+        result = list(start_key)
+        for _ in range(length - self.n):
+            key = tuple(result[-self.n:])
+            if key in self.model:
+                next_word = random.choice(self.model[key])
+                result.append(next_word)
+            else:
+                break
+        return ' '.join(result)
+
+# Example usage
+input_text = "Once upon a time, in a distant land, there was a mysterious forest. The forest was known for its strange creatures and magical aura."
+generator = MarkovChainTextGenerator(input_text, n=2)
+generated_text = generator.generate_text(length=30)
+
+print(generated_text)
