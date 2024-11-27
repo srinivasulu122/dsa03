@@ -1,0 +1,55 @@
+import re
+
+class FOPCParser:
+    def __init__(self):
+        self.predicates = {}
+        self.variables = set()
+
+    def parse(self, expression):
+        expression = expression.replace(" ", "")
+        return self._parse_expression(expression)
+
+    def _parse_expression(self, expression):
+        if re.match(r'[A-Za-z]\([A-Za-z0-9,]*\)', expression):
+            return self._parse_predicate(expression)
+        elif "and" in expression:
+            return self._parse_and(expression)
+        elif "or" in expression:
+            return self._parse_or(expression)
+        elif "not" in expression:
+            return self._parse_not(expression)
+        else:
+            return "Invalid Expression"
+
+    def _parse_predicate(self, expression):
+        match = re.match(r'([A-Za-z]+)\(([A-Za-z0-9,]+)\)', expression)
+        predicate = match.group(1)
+        args = match.group(2).split(",")
+        self.predicates[predicate] = args
+        return f"Predicate: {predicate} with arguments {args}"
+
+    def _parse_and(self, expression):
+        left, right = expression.split("and")
+        return f"AND operation: ({self._parse_expression(left)}) AND ({self._parse_expression(right)})"
+
+    def _parse_or(self, expression):
+        left, right = expression.split("or")
+        return f"OR operation: ({self._parse_expression(left)}) OR ({self._parse_expression(right)})"
+
+    def _parse_not(self, expression):
+        sub_expr = expression.replace("not", "").strip()
+        return f"NOT operation: NOT ({self._parse_expression(sub_expr)})"
+
+
+# Example usage
+parser = FOPCParser()
+
+expression1 = "P(x,y)"
+expression2 = "P(x,y) and Q(z)"
+expression3 = "not P(x)"
+expression4 = "P(x) or Q(x)"
+
+print(parser.parse(expression1))
+print(parser.parse(expression2))
+print(parser.parse(expression3))
+print(parser.parse(expression4))
