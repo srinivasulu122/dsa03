@@ -1,0 +1,40 @@
+class TopDownParser:
+    def __init__(self, grammar):
+        self.grammar = grammar
+
+    def parse(self, start_symbol, input_string):
+        self.stack = [start_symbol]
+        self.input_string = input_string
+        self.position = 0
+        return self._parse_recursive()
+
+    def _parse_recursive(self):
+        if self.position == len(self.input_string) and not self.stack:
+            return True
+        if not self.stack:
+            return False
+
+        top = self.stack.pop()
+
+        if top in self.grammar:  # If top is a non-terminal, expand it
+            rule = self.grammar[top]
+            for production in reversed(rule):
+                for symbol in reversed(production):
+                    self.stack.append(symbol)  # Expand the rule
+            return self._parse_recursive()
+        elif top == self.input_string[self.position]:  # If top matches input
+            self.position += 1
+            return self._parse_recursive()
+        else:
+            return False
+
+
+grammar = {
+    'S': [['a', 'S', 'b'], ['a', 'b']],  # S -> aSb | ab
+}
+
+parser = TopDownParser(grammar)
+input_string = "aabb"
+result = parser.parse('S', input_string)
+
+print("Parse successful:", result)
