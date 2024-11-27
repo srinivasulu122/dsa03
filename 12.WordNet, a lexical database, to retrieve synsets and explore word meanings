@@ -1,0 +1,24 @@
+import nltk
+from nltk.corpus import wordnet as wn
+
+nltk.download('wordnet')
+
+word = "bank"
+synsets = wn.synsets(word)
+
+for synset in synsets:
+    print(f"Synset: {synset.name()}")
+    print(f"Definition: {synset.definition()}")
+    print(f"Examples: {synset.examples()}")
+    print()
+
+first_synset = synsets[0]
+lemmas = first_synset.lemmas()
+print("Lemmas of the first synset:")
+for lemma in lemmas:
+    print(f"- {lemma.name()}")
+
+hypernyms = first_synset.hypernyms()
+print("\nHypernyms (more general terms):")
+for hypernym in hypernyms:
+    print(f"- {hypernym.name()}")
