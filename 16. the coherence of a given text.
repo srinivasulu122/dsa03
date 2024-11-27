@@ -1,0 +1,22 @@
+def evaluate_coherence(text):
+    sentences = text.split('.')
+    sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
+    
+    if len(sentences) < 2:
+        return 0
+    
+    coherence_scores = []
+    
+    for i in range(len(sentences) - 1):
+        words1 = set(sentences[i].lower().split())
+        words2 = set(sentences[i + 1].lower().split())
+        common_words = words1.intersection(words2)
+        coherence_scores.append(len(common_words))
+    
+    average_coherence = sum(coherence_scores) / len(coherence_scores)
+    return average_coherence
+
+text = "The cat sat on the mat. It was a comfortable place. The cat played with a ball. The weather outside was nice."
+
+coherence_score = evaluate_coherence(text)
+print(f"Coherence Score: {coherence_score}")
