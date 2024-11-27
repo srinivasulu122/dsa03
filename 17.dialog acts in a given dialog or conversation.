@@ -1,0 +1,39 @@
+import random
+
+def classify_dialog_act(sentence):
+    greetings = ['hello', 'hi', 'hey', 'good morning', 'good evening']
+    questions = ['how', 'what', 'where', 'why', 'when']
+    requests = ['please', 'could you', 'can you', 'would you']
+    thanks = ['thank you', 'thanks', 'thankful']
+    
+    sentence = sentence.lower()
+    
+    if any(word in sentence for word in greetings):
+        return 'Greeting'
+    elif any(word in sentence for word in questions):
+        return 'Question'
+    elif any(word in sentence for word in requests):
+        return 'Request'
+    elif any(word in sentence for word in thanks):
+        return 'Thanks'
+    else:
+        return 'Statement'
+
+def recognize_dialog_acts(dialog):
+    dialog_acts = []
+    for sentence in dialog:
+        dialog_acts.append(classify_dialog_act(sentence))
+    return dialog_acts
+
+dialog = [
+    "Hello!",
+    "How are you?",
+    "Can you help me with this?",
+    "Thanks for your help!",
+    "I am doing well, how about you?"
+]
+
+dialog_acts = recognize_dialog_acts(dialog)
+
+for i, act in enumerate(dialog_acts):
+    print(f"Sentence: {dialog[i]} - Dialog Act: {act}")
