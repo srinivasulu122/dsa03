@@ -1,0 +1,27 @@
+import random
+
+text = "I love to write code. I love to learn new things. Code is fun."
+words = text.split()
+
+bigrams = {}
+for i in range(len(words) - 1):
+    if words[i] not in bigrams:
+        bigrams[words[i]] = []
+    bigrams[words[i]].append(words[i + 1])
+
+def generate_text(start_word, num_words):
+    result = [start_word]
+    current_word = start_word
+    for _ in range(num_words - 1):
+        if current_word in bigrams:
+            next_word = random.choice(bigrams[current_word])
+            result.append(next_word)
+            current_word = next_word
+        else:
+            break
+    return ' '.join(result)
+
+start_word = "I"
+num_words = 10
+generated_text = generate_text(start_word, num_words)
+print("Generated Text:", generated_text)
