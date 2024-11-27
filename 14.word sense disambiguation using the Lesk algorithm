@@ -1,0 +1,54 @@
+import requests
+from collections import Counter
+
+def get_word_senses(word):
+    url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        senses = []
+        for meaning in data[0]['meanings']:
+            for definition in meaning['definitions']:
+                senses.append(definition['definition'])
+        return senses
+    else:
+        return []
+
+def tokenize(text):
+    return text.lower().split()
+
+def overlap(context_tokens, definition_tokens):
+    context_counter = Counter(context_tokens)
+    definition_counter = Counter(definition_tokens)
+    common_tokens = context_counter & definition_counter
+    return sum(common_tokens.values())
+
+def lesk_algorithm(context, ambiguous_word):
+    context_tokens = tokenize(context)
+    senses = get_word_senses(ambiguous_word)
+    
+    if not senses:
+        return None
+    
+    max_overlap = 0
+    best_sense = None
+
+    for sense in senses:
+        sense_tokens = tokenize(sense)
+        overlap_count = overlap(context_tokens, sense_tokens)
+        
+        if overlap_count > max_overlap:
+            max_overlap = overlap_count
+            best_sense = sense
+
+    return best_sense
+
+context = input("Enter the context: ")
+ambiguous_word = input("Enter the ambiguous word: ")
+
+best_sense = lesk_algorithm(context, ambiguous_word)
+
+if best_sense:
+    print(f"Best sense of '{ambiguous_word}': {best_sense}")
+else:
+    print(f"No suitable sense found for '{ambiguous_word}'")
